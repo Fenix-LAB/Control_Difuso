@@ -53,15 +53,15 @@ Out_N = fuzzy.sigmf(x_out, [-30, 0.7])
 # 17 Si el error(P) es Z, y error(D) es P, y error(I) es Z, entonces CONTROL es Z
 # 18 Si el error(P) es Z, y error(D) es P, y error(I) es P, entonces CONTROL es Z
 
-# 19 Si el error(P) es N, y error(D) es N, y error(I) es N, entonces CONTROL es N
-# 20 Si el error(P) es N, y error(D) es N, y error(I) es Z, entonces CONTROL es N
-# 21 Si el error(P) es N, y error(D) es N, y error(I) es P, entonces CONTROL es N
-# 22 Si el error(P) es N, y error(D) es Z, y error(I) es N, entonces CONTROL es N
-# 23 Si el error(P) es N, y error(D) es Z, y error(I) es Z, entonces CONTROL es N
-# 24 Si el error(P) es N, y error(D) es Z, y error(I) es P, entonces CONTROL es N
-# 25 Si el error(P) es N, y error(D) es P, y error(I) es N, entonces CONTROL es N
-# 26 Si el error(P) es N, y error(D) es P, y error(I) es Z, entonces CONTROL es N
-# 27 Si el error(P) es N, y error(D) es P, y error(I) es P, entonces CONTROL es N
+# 19 Si el error(P) es P, y error(D) es N, y error(I) es N, entonces CONTROL es P
+# 20 Si el error(P) es P, y error(D) es N, y error(I) es Z, entonces CONTROL es P
+# 21 Si el error(P) es P, y error(D) es N, y error(I) es P, entonces CONTROL es P
+# 22 Si el error(P) es P, y error(D) es Z, y error(I) es N, entonces CONTROL es P
+# 23 Si el error(P) es P, y error(D) es Z, y error(I) es Z, entonces CONTROL es P
+# 24 Si el error(P) es P, y error(D) es Z, y error(I) es P, entonces CONTROL es P
+# 25 Si el error(P) es P, y error(D) es P, y error(I) es N, entonces CONTROL es P
+# 26 Si el error(P) es P, y error(D) es P, y error(I) es Z, entonces CONTROL es P
+# 27 Si el error(P) es P, y error(D) es P, y error(I) es P, entonces CONTROL es P
 
 
 
