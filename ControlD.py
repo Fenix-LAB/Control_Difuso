@@ -1,11 +1,17 @@
 #Librerias
-import fuzzy
 import matplotlib.pyplot as plt
+import fuzzy
 import numpy as np
+import skfuzzy as fuzz
 
 # Universos
 x = np.arange(-1, 1, 0.01)
 x_out = np.arange(0, 2, 0.01)
+
+# Entradas
+input_E_P = 0.5
+input_E_I = 0.5
+input_E_D = 0.5
 
 ######################################## Funciones de Membresia ##########################################
 
@@ -19,54 +25,142 @@ FMem_I_Z = fuzzy.gaussmf(x, [0.1,0])
 FMem_I_P = fuzzy.sigmf(x, [30, 0.3])
 FMem_I_N = fuzzy.sigmf(x, [-30, -0.3])
 
-
 # Funcion de membresia para la cte Derivativa ERROR
 FMem_D_Z = fuzzy.gaussmf(x, [0.1,0])
 FMem_D_P = fuzzy.sigmf(x, [30, 0.3])
 FMem_D_N = fuzzy.sigmf(x, [-30, -0.3])
-
 
 # Salida
 Out_Z = fuzzy.gaussmf(x_out, [0.1,1])
 Out_P = fuzzy.sigmf(x_out, [30, 1.3])
 Out_N = fuzzy.sigmf(x_out, [-30, 0.7])
 
+#####################################################################################################
+
+val_P_Z = fuzz.interp_membership(x, FMem_P_Z, input_E_P)
+val_P_N = fuzz.interp_membership(x, FMem_P_N, input_E_P)
+val_P_P = fuzz.interp_membership(x, FMem_P_P, input_E_P)
+print(val_P_Z, val_P_N, val_P_P)
+
+val_I_Z = fuzz.interp_membership(x, FMem_I_Z, input_E_I)
+val_I_N = fuzz.interp_membership(x, FMem_I_N, input_E_I)
+val_I_P = fuzz.interp_membership(x, FMem_I_P, input_E_I)
+print(val_I_Z, val_I_N, val_I_P)
+
+val_D_Z = fuzz.interp_membership(x, FMem_D_Z, input_E_D)
+val_D_N = fuzz.interp_membership(x, FMem_D_N, input_E_D)
+val_D_P = fuzz.interp_membership(x, FMem_D_P, input_E_D)
+print(val_D_Z, val_D_N, val_D_P)
+
 ############################################ Reglas #################################################
 
 # 1 Si el error(P) es N, y error(D) es N, y error(I) es N, entonces CONTROL es N
+rule1 = np.fmin(np.fmin(np.fmin(val_P_N, val_D_N), val_I_N), Out_N)
 # 2 Si el error(P) es N, y error(D) es N, y error(I) es Z, entonces CONTROL es N
+rule2 = np.fmin(np.fmin(np.fmin(val_P_N, val_D_N), val_I_Z), Out_N)
 # 3 Si el error(P) es N, y error(D) es N, y error(I) es P, entonces CONTROL es N
+rule3 = np.fmin(np.fmin(np.fmin(val_P_N, val_D_N), val_I_P), Out_N)
 # 4 Si el error(P) es N, y error(D) es Z, y error(I) es N, entonces CONTROL es N
+rule4 = np.fmin(np.fmin(np.fmin(val_P_N, val_D_Z), val_I_N), Out_N)
 # 5 Si el error(P) es N, y error(D) es Z, y error(I) es Z, entonces CONTROL es N
+rule5 = np.fmin(np.fmin(np.fmin(val_P_N, val_D_Z), val_I_Z), Out_N)
 # 6 Si el error(P) es N, y error(D) es Z, y error(I) es P, entonces CONTROL es N
+rule6 = np.fmin(np.fmin(np.fmin(val_P_N, val_D_Z), val_I_P), Out_N)
 # 7 Si el error(P) es N, y error(D) es P, y error(I) es N, entonces CONTROL es N
+rule7 = np.fmin(np.fmin(np.fmin(val_P_N, val_D_P), val_I_N), Out_N)
 # 8 Si el error(P) es N, y error(D) es P, y error(I) es Z, entonces CONTROL es N
+rule8 = np.fmin(np.fmin(np.fmin(val_P_N, val_D_P), val_I_Z), Out_N)
 # 9 Si el error(P) es N, y error(D) es P, y error(I) es P, entonces CONTROL es N
+rule9 = np.fmin(np.fmin(np.fmin(val_P_N, val_D_P), val_I_P), Out_N)
 
 # 10 Si el error(P) es Z, y error(D) es N, y error(I) es N, entonces CONTROL es Z
+rule10 = np.fmin(np.fmin(np.fmin(val_P_Z, val_D_N), val_I_N), Out_Z)
 # 11 Si el error(P) es Z, y error(D) es N, y error(I) es Z, entonces CONTROL es Z
+rule11 = np.fmin(np.fmin(np.fmin(val_P_Z, val_D_N), val_I_Z), Out_Z)
 # 12 Si el error(P) es Z, y error(D) es N, y error(I) es P, entonces CONTROL es Z
+rule12 = np.fmin(np.fmin(np.fmin(val_P_Z, val_D_N), val_I_P), Out_Z)
 # 13 Si el error(P) es Z, y error(D) es Z, y error(I) es N, entonces CONTROL es Z
+rule13 = np.fmin(np.fmin(np.fmin(val_P_Z, val_D_Z), val_I_N), Out_Z)
 # 14 Si el error(P) es Z, y error(D) es Z, y error(I) es Z, entonces CONTROL es Z
+rule14 = np.fmin(np.fmin(np.fmin(val_P_Z, val_D_Z), val_I_Z), Out_Z)
 # 15 Si el error(P) es Z, y error(D) es Z, y error(I) es P, entonces CONTROL es Z
+rule15 = np.fmin(np.fmin(np.fmin(val_P_Z, val_D_Z), val_I_P), Out_Z)
 # 16 Si el error(P) es Z, y error(D) es P, y error(I) es N, entonces CONTROL es Z
+rule16 = np.fmin(np.fmin(np.fmin(val_P_Z, val_D_P), val_I_N), Out_Z)
 # 17 Si el error(P) es Z, y error(D) es P, y error(I) es Z, entonces CONTROL es Z
+rule17 = np.fmin(np.fmin(np.fmin(val_P_Z, val_D_P), val_I_Z), Out_Z)
 # 18 Si el error(P) es Z, y error(D) es P, y error(I) es P, entonces CONTROL es Z
+rule18 = np.fmin(np.fmin(np.fmin(val_P_Z, val_D_P), val_I_P), Out_Z)
 
 # 19 Si el error(P) es P, y error(D) es N, y error(I) es N, entonces CONTROL es P
+rule19 = np.fmin(np.fmin(np.fmin(val_P_P, val_D_N), val_I_N), Out_P)
 # 20 Si el error(P) es P, y error(D) es N, y error(I) es Z, entonces CONTROL es P
+rule20 = np.fmin(np.fmin(np.fmin(val_P_P, val_D_N), val_I_Z), Out_P)
 # 21 Si el error(P) es P, y error(D) es N, y error(I) es P, entonces CONTROL es P
+rule21 = np.fmin(np.fmin(np.fmin(val_P_P, val_D_N), val_I_P), Out_P)
 # 22 Si el error(P) es P, y error(D) es Z, y error(I) es N, entonces CONTROL es P
+rule22 = np.fmin(np.fmin(np.fmin(val_P_P, val_D_Z), val_I_N), Out_P)
 # 23 Si el error(P) es P, y error(D) es Z, y error(I) es Z, entonces CONTROL es P
+rule23 = np.fmin(np.fmin(np.fmin(val_P_P, val_D_Z), val_I_Z), Out_P)
 # 24 Si el error(P) es P, y error(D) es Z, y error(I) es P, entonces CONTROL es P
+rule24 = np.fmin(np.fmin(np.fmin(val_P_P, val_D_Z), val_I_P), Out_P)
 # 25 Si el error(P) es P, y error(D) es P, y error(I) es N, entonces CONTROL es P
+rule25 = np.fmin(np.fmin(np.fmin(val_P_P, val_D_P), val_I_N), Out_P)
 # 26 Si el error(P) es P, y error(D) es P, y error(I) es Z, entonces CONTROL es P
+rule26 = np.fmin(np.fmin(np.fmin(val_P_P, val_D_P), val_I_Z), Out_P)
 # 27 Si el error(P) es P, y error(D) es P, y error(I) es P, entonces CONTROL es P
+rule27 = np.fmin(np.fmin(np.fmin(val_P_P, val_D_P), val_I_P), Out_P)
 
+#print(rule1)
+############################################ Prueba ################################################
 
+Out_KZ = np.fmax(np.fmax(np.fmax(np.fmax(np.fmax(np.fmax(np.fmax(np.fmax(rule10,rule11),rule12),rule13),rule14),rule15),rule16),rule17),rule18)
+Out_KN= np.fmax(np.fmax(np.fmax(np.fmax(np.fmax(np.fmax(np.fmax(np.fmax(rule1,rule2),rule3),rule4),rule5),rule6),rule7),rule8),rule9)
+Out_KP = np.fmax(np.fmax(np.fmax(np.fmax(np.fmax(np.fmax(np.fmax(np.fmax(rule19,rule20),rule21),rule22),rule23),rule24),rule25),rule26),rule27)
+# cut_P_Z = fuzzy.cut(val_P_Z, FMem_P_Z)
+# cut_P_Z = fuzzy.cut(val_P_Z, FMem_P_Z)
+# cut_P_Z = fuzzy.cut(val_P_Z, FMem_P_Z)
 
+# cut_P_Z = fuzzy.cut(val_P_Z, FMem_P_Z)
+# cut_P_Z = fuzzy.cut(val_P_Z, FMem_P_Z)
+# cut_P_Z = fuzzy.cut(val_P_Z, FMem_P_Z)
 
+# cut_P_Z = fuzzy.cut(val_P_Z, FMem_P_Z)
+# cut_P_Z = fuzzy.cut(val_P_Z, FMem_P_Z)
+# cut_P_Z = fuzzy.cut(val_P_Z, FMem_P_Z)
 
+########################################## Defuzificacion #############################################
+
+out = np.fmax(np.fmax(Out_KN, Out_KZ), Out_KP)
+defuzzified  = fuzz.defuzz(x_out, out, 'centroid')
+print(defuzzified)
+
+######################################### Funciones ################################################
+def gaussmf(x, param):
+    #param = [sig, x0]
+    # sig > 0
+    sig = param[0]
+    x0 = param[1]
+    if (sig > 0):
+        if (type(x) is int) or (type(x) is float) or (type(x) is np.float64):     
+            m = np.exp(-0.5*((x - x0)/sig)**2)
+        else: 
+            m = np.zeros(x.size)
+            for i in range(x.size):
+                m[i] = np.exp(-0.5*((x[i] - x0)/sig)**2)
+        return m
+    else:
+        return -1
+
+def defuzz(y, mf, option):
+    if option == 'centroid':
+        num = 0
+        den = 0
+        for i in range(y.size):
+            num = num + y[i]*mf[i]
+            den = den + mf[i]
+        y0 = num/den
+        return y0
 ########################################### Graficas ###############################################
 fig, ax = plt.subplots(3, 4, sharey = True)
 fig2, ax2 = plt.subplots(1, 4, sharey = True)
@@ -99,3 +193,4 @@ ax2[3].plot(x_out, Out_P)
 ax2[3].plot(x_out, Out_N)
 
 plt.show()
+
