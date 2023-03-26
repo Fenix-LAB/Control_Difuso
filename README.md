@@ -9,3 +9,5 @@ El éxito del proyecto se medirá por la mejora en el rendimiento del sistema de
 
 En resumen, este proyecto tiene como objetivo diseñar y evaluar un controlador difuso para ajustar las ganancias del controlador PID en un sistema de control de procesos. El controlador difuso se basa en reglas lingüísticas y se evaluará su capacidad para mejorar el rendimiento del sistema de control de procesos en comparación con el uso del controlador PID con ganancias ajustadas manualmente.
 
+![Captura de pantalla 2023-03-26 094915](https://user-images.githubusercontent.com/85959332/227787479-7945bfa8-7087-4efd-89fb-d8549ae64e45.png)
+
