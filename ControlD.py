@@ -9,9 +9,18 @@ x = np.arange(-1, 1, 0.01)
 x_out = np.arange(0, 2, 0.01)
 
 # Entradas
-input_E_P = 0.2
-input_E_I = -0.9
-input_E_D = 0.7
+# input_E_P = 0.2
+# input_E_I = -0.9
+# input_E_D = 0.7
+
+print("Proporciona un valor para el error proporcional en el rango de [-1, 1]: ")
+input_E_P = float(input())
+
+print("Proporciona un valor para el error integral en el rango de [-1, 1]: ")
+input_E_I = float(input())
+
+print("Proporciona un valor para el error diferencial en el rango de [-1, 1]: ")
+input_E_D = float(input())
 
 ######################################## Funciones de Membresia ##########################################
 
@@ -137,7 +146,7 @@ Out_KP = np.fmax(np.fmax(np.fmax(np.fmax(np.fmax(np.fmax(np.fmax(np.fmax(rule19,
 
 out = np.fmax(np.fmax(Out_KN, Out_KZ), Out_KP)
 defuzzified  = fuzz.defuzz(x_out, out, 'centroid')
-print(defuzzified)
+print("El valor defuzificado es el siguiente: ", defuzzified)
 
 ######################################### Funciones ################################################
 def gaussmf(x, param):
@@ -181,7 +190,8 @@ def sigmf(x, param):
 fig, ax = plt.subplots(3, 4, sharey = True)
 fig2, ax2 = plt.subplots(1, 4, sharey = True)
 fig3, ax3 = plt.subplots(1, 3, sharey = True)
-fig4, ax4 = plt.subplots(1, 4, sharey = True)
+fig4, ax4  = plt.subplots()
+#ax5 = plt.plot([defuzzified, defuzzified], [0.0, 1.0], linestyle="--")
 
 ax[0, 0].plot(x, FMem_P_Z)
 ax[0, 1].plot(x, FMem_P_P)
@@ -211,17 +221,13 @@ ax2[3].plot(x_out, Out_Z)
 ax2[3].plot(x_out, Out_P)
 ax2[3].plot(x_out, Out_N)
 
-ax3[0].plot(x, Out_KZ)
-ax3[1].plot(x, Out_KN)
-ax3[2].plot(x, Out_KP)
+ax3[0].plot(x_out, Out_KZ)
+ax3[1].plot(x_out, Out_KN)
+ax3[2].plot(x_out, Out_KP)
 
-# ax4[0].plot(x, cut_P_Z)
-# ax4[1].plot(x, cut_P_N)
-# ax4[2].plot(x, cut_P_P)
-# ax4[3].plot(x, cut_P_Z)
-# ax4[3].plot(x, cut_P_N)
-# ax4[3].plot(x, cut_P_P)
+ax4.plot(x_out, out)
 
+ax5 = plt.plot([defuzzified, defuzzified], [0.0, 1.0], linestyle="--")
 
 # ax4.fill_between(y_risk, risk0, out_not, facecolor = 'r', alpha = 0.7)
 # ax4.plot(y_risk, risk_not, 'r', linestyle = '--')
